@@ -53,4 +53,7 @@ defmodule Elixir99 do
 
   @spec reverse(list(t)) :: list(t) when t: var
   def reverse(xs), do: reverse_aux(xs, [])
+
+  @spec palindrome(list()) :: boolean()
+  def palindrome(xs), do: xs == reverse(xs)
 end
