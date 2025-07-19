@@ -148,7 +148,7 @@ defmodule Elixir99 do
   @spec repeat(t, integer(), list(t)) :: list(t) when t: var
   defp repeat(x, n, acc) do
     case n do
-      0 -> reverse(acc)
+      0 -> acc
       n -> repeat(x, n - 1, [x | acc])
     end
   end
