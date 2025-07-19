@@ -129,4 +129,28 @@ defmodule Elixir99Test do
   test "`encode` should compress similar and uniq elements into rle pairs" do
     assert [{4, 1}, {1, 2}, {2, 3}, {1, 4}] = Elixir99.encode([1, 1, 1, 1, 2, 3, 3, 4])
   end
+
+  test "`duplicate` should return empty list when empty list provided" do
+    assert [] = Elixir99.duplicate([])
+  end
+
+  test "`duplicate` should return list with all elements duplicated" do
+    assert [1, 1, 2, 2, 3, 3] = Elixir99.duplicate([1, 2, 3])
+  end
+
+  test "`replicate` should return empty list when empty list provided" do
+    assert [] = Elixir99.replicate([], 3)
+  end
+
+  test "`replicate` should return list with all elements replicated n times" do
+    assert [1, 1, 1, 2, 2, 2, 3, 3, 3] = Elixir99.replicate([1, 2, 3], 3)
+  end
+
+  test "`drop` should return empty list when empty list provided" do
+    assert [] = Elixir99.drop([], 3)
+  end
+
+  test "`drop` should remove every nth element from passed list" do
+    assert [1, 2, 4, 5] = Elixir99.drop([1, 2, 3, 4, 5, 6], 3)
+  end
 end

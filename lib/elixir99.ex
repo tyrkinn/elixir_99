@@ -136,4 +136,40 @@ defmodule Elixir99 do
       [h | tail] -> encode_aux(tail, {1, h}, [])
     end
   end
+
+  @spec duplicate(list(t)) :: list(t) when t: var
+  def duplicate(xs) do
+    case xs do
+      [] -> []
+      [h | tail] -> [h, h | duplicate(tail)]
+    end
+  end
+
+  @spec repeat(t, integer(), list(t)) :: list(t) when t: var
+  defp repeat(x, n, acc) do
+    case n do
+      0 -> acc
+      n -> repeat(x, n - 1, acc ++ [x])
+    end
+  end
+
+  @spec replicate(list(t), integer()) :: list(t) when t: var
+  def replicate(xs, n) do
+    case xs do
+      [] -> []
+      [h | tail] -> repeat(h, n, []) ++ replicate(tail, n)
+    end
+  end
+
+  @spec drop_aux(list(t), integer(), integer(), list(t)) :: list(t) when t: var
+  defp drop_aux(xs, count, n, acc) do
+    case xs do
+      [] -> acc
+      [_ | tail] when count == n -> drop_aux(tail, 1, n, acc)
+      [h | tail] -> drop_aux(tail, count + 1, n, acc ++ [h])
+    end
+  end
+
+  @spec drop(list(t), integer()) :: list(t) when t: var
+  def drop(xs, n), do: drop_aux(xs, 1, n, [])
 end
