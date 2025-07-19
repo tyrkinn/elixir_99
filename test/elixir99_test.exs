@@ -21,4 +21,16 @@ defmodule Elixir99Test do
   test "`last_two` returns last two elements" do
     assert {:ok, {45, 5}} = Elixir99.last_two([2, 3, 45, 5])
   end
+
+  test "`nth` returns error when list is empty" do
+    assert {:error, _} = Elixir99.nth([], 1)
+  end
+
+  test "`nth` returns error when list length <= n" do
+    assert {:error, _} = Elixir99.nth([1, 2, 3], 3)
+  end
+
+  test "`nth` returns list nth elements" do
+    assert {:ok, 3} = Elixir99.nth([1, 2, 3, 4, 5], 2)
+  end
 end

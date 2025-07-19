@@ -15,4 +15,17 @@ defmodule Elixir99 do
       [_ | tail] -> last_two(tail)
     end
   end
+
+  def nth(xs, n) do
+    case {xs, n} do
+      _ when length(xs) <= n or n < 0 ->
+        {:error, "Invalid index"}
+
+      {[x | _], 0} ->
+        {:ok, x}
+
+      {[_ | tail], n} ->
+        nth(tail, n - 1)
+    end
+  end
 end
