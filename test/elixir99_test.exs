@@ -2,55 +2,55 @@ defmodule Elixir99Test do
   use ExUnit.Case
   doctest Elixir99
 
-  test "`last` returns error when list is empty" do
+  test "`last` should return error when list is empty" do
     assert {:error, _} = Elixir99.last([])
   end
 
-  test "`last` returns last element" do
+  test "`last` should return last element" do
     assert {:ok, 5} = Elixir99.last([2, 3, 45, 5])
   end
 
-  test "`last_two` returns error when list is empty" do
+  test "`last_two` should return error when list is empty" do
     assert {:error, _} = Elixir99.last_two([])
   end
 
-  test "`last_two` returns error when list contains only one value" do
+  test "`last_two` should return error when list contains only one value" do
     assert {:error, _} = Elixir99.last_two([13])
   end
 
-  test "`last_two` returns last two elements" do
+  test "`last_two` should return last two elements" do
     assert {:ok, {45, 5}} = Elixir99.last_two([2, 3, 45, 5])
   end
 
-  test "`nth` returns error when list is empty" do
+  test "`nth` should return error when list is empty" do
     assert {:error, _} = Elixir99.nth([], 1)
   end
 
-  test "`nth` returns error when list length <= n" do
+  test "`nth` should return error when list length <= n" do
     assert {:error, _} = Elixir99.nth([1, 2, 3], 3)
   end
 
-  test "`nth` returns list nth elements" do
+  test "`nth` should return list nth elements" do
     assert {:ok, 3} = Elixir99.nth([1, 2, 3, 4, 5], 2)
   end
 
-  test "`len` returns 0 on empty list" do
+  test "`len` should return 0 on empty list" do
     assert 0 = Elixir99.len([])
   end
 
-  test "`len` returns length of list" do
+  test "`len` should return length of list" do
     assert 5 = Elixir99.len([1, 2, 3, 4, 5])
   end
 
-  test "`reverse` on empty list returns empty list" do
+  test "`reverse` on empty list should return empty list" do
     assert [] = Elixir99.reverse([])
   end
 
-  test "`reverse` on list of one element returns this list back" do
+  test "`reverse` on list of one element should return this list back" do
     assert [1] = Elixir99.reverse([1])
   end
 
-  test "`reverse` returns reversed list" do
+  test "`reverse` should return reversed list" do
     assert [3, 2, 1] = Elixir99.reverse([1, 2, 3])
   end
 
@@ -64,5 +64,37 @@ defmodule Elixir99Test do
 
   test "`palindrome` should return false when list is not palindrome" do
     assert not Elixir99.palindrome([1, 2, 2, 3, 1])
+  end
+
+  test "`flatten` should return empty list when empty list provided" do
+    assert [] = Elixir99.flatten([])
+  end
+
+  test "`flatten` should return just values when only `one` nodes provided" do
+    assert [1, 2, 3] = Elixir99.flatten([{:one, 1}, {:one, 2}, {:one, 3}])
+  end
+
+  test "`flatten` should unwrap `many` node when it contains only `one` nodes inside" do
+    assert [1, 2, 3] = Elixir99.flatten([{:many, [{:one, 1}, {:one, 2}, {:one, 3}]}])
+  end
+
+  test "`flatten` should unwrap nested `many` nodes" do
+    assert [1, 2, 3, 4, 5] =
+             Elixir99.flatten([
+               {:many, [{:many, [{:one, 1}]}, {:many, [{:one, 2}, {:one, 3}]}]},
+               {:many, [{:many, [{:many, [{:one, 4}]}]}, {:one, 5}]}
+             ])
+  end
+
+  test "`compress` should return empty list when empty list provided" do
+    assert [] = Elixir99.compress([])
+  end
+
+  test "`compress` should return list back when it contains one element" do
+    assert [1] = Elixir99.compress([1])
+  end
+
+  test "`compress` should return compressed list" do
+    assert [1, 2, 3, 4, 1, 4] = Elixir99.compress([1, 1, 1, 2, 3, 3, 4, 4, 1, 1, 4])
   end
 end

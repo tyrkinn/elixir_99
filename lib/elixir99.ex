@@ -56,4 +56,36 @@ defmodule Elixir99 do
 
   @spec palindrome(list()) :: boolean()
   def palindrome(xs), do: xs == reverse(xs)
+
+  @type t_node(t) :: {:one, t} | {:many, list(t_node(t))}
+
+  @spec flatten_aux(list(t_node(t)), list(t)) :: list(t) when t: var
+  defp flatten_aux(xs, acc) do
+    case xs do
+      [] -> acc
+      [{:one, x} | tail] -> flatten_aux(tail, acc ++ [x])
+      [{:many, l} | tail] -> flatten_aux(tail, acc ++ flatten_aux(l, []))
+    end
+  end
+
+  @spec flatten(list(t_node(t))) :: list(t) when t: var
+  def flatten(xs), do: flatten_aux(xs, [])
+
+  @spec compress_aux(list(t), t, list(t)) :: list(t) when t: var
+  def compress_aux(xs, cur, acc) do
+    case xs do
+      [] -> acc
+      [h | tail] when h == cur -> compress_aux(tail, h, acc)
+      [h | tail] -> compress_aux(tail, h, acc ++ [h])
+    end
+  end
+
+  @spec compress(list(t)) :: list(t) when t: var
+  def compress(xs) do
+    case xs do
+      [] -> []
+      [x] -> [x]
+      [h | tail] -> compress_aux(tail, h, [h])
+    end
+  end
 end
