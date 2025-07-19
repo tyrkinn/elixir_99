@@ -97,4 +97,36 @@ defmodule Elixir99Test do
   test "`compress` should return compressed list" do
     assert [1, 2, 3, 4, 1, 4] = Elixir99.compress([1, 1, 1, 2, 3, 3, 4, 4, 1, 1, 4])
   end
+
+  test "`pack` should return empty list when empty list provided" do
+    assert [] = Elixir99.pack([])
+  end
+
+  test "`pack` should compress similar elements into inner lists" do
+    assert [[1, 1, 1, 1]] = Elixir99.pack([1, 1, 1, 1])
+  end
+
+  test "`pack` should compress uniq elements into inner lists" do
+    assert [[1], [2], [3], [4]] = Elixir99.pack([1, 2, 3, 4])
+  end
+
+  test "`pack` should compress similar and uniq elements into inner lists" do
+    assert [[1, 1, 1, 1], [2], [3, 3], [4]] = Elixir99.pack([1, 1, 1, 1, 2, 3, 3, 4])
+  end
+
+  test "`encode` should return empty list when empty list provided" do
+    assert [] = Elixir99.encode([])
+  end
+
+  test "`encode` should compress similar elements into rle pairs" do
+    assert [{4, 1}] = Elixir99.encode([1, 1, 1, 1])
+  end
+
+  test "`encode` should compress uniq elements into rle pairs" do
+    assert [{1, 1}, {1, 2}, {1, 3}, {1, 4}] = Elixir99.encode([1, 2, 3, 4])
+  end
+
+  test "`encode` should compress similar and uniq elements into rle pairs" do
+    assert [{4, 1}, {1, 2}, {2, 3}, {1, 4}] = Elixir99.encode([1, 1, 1, 1, 2, 3, 3, 4])
+  end
 end

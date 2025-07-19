@@ -72,7 +72,7 @@ defmodule Elixir99 do
   def flatten(xs), do: flatten_aux(xs, [])
 
   @spec compress_aux(list(t), t, list(t)) :: list(t) when t: var
-  def compress_aux(xs, cur, acc) do
+  defp compress_aux(xs, cur, acc) do
     case xs do
       [] -> acc
       [h | tail] when h == cur -> compress_aux(tail, h, acc)
@@ -86,6 +86,54 @@ defmodule Elixir99 do
       [] -> []
       [x] -> [x]
       [h | tail] -> compress_aux(tail, h, [h])
+    end
+  end
+
+  @spec pack_aux(list(t), list(t), list(list(t))) :: list(list(t)) when t: var
+  defp pack_aux(xs, cur, acc) do
+    case {xs, cur} do
+      {[], c} ->
+        acc ++ [c]
+
+      {[h | tail], [x | _]} when h == x ->
+        pack_aux(tail, cur ++ [h], acc)
+
+      {[h | tail], cur} ->
+        pack_aux(tail, [h], acc ++ [cur])
+    end
+  end
+
+  @spec pack(list(t)) :: list(list(t)) when t: var
+  def pack(xs) do
+    case xs do
+      [] -> []
+      [x] -> [[x]]
+      [h | tail] -> pack_aux(tail, [h], [])
+    end
+  end
+
+  @type rle_pair(t) :: {integer(), t}
+
+  @spec encode_aux(list(t), rle_pair(t), list(rle_pair(t))) :: list(rle_pair(t)) when t: var
+  defp encode_aux(xs, pair, acc) do
+    case {xs, pair} do
+      {[], p} ->
+        acc ++ [p]
+
+      {[h | tail], {c, v}} when h == v ->
+        encode_aux(tail, {c + 1, v}, acc)
+
+      {[h | tail], p} ->
+        encode_aux(tail, {1, h}, acc ++ [p])
+    end
+  end
+
+  @spec encode(list(t)) :: list(rle_pair(t)) when t: var
+  def encode(xs) do
+    case xs do
+      [] -> []
+      [x] -> [{1, x}]
+      [h | tail] -> encode_aux(tail, {1, h}, [])
     end
   end
 end
