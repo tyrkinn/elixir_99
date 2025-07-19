@@ -1,5 +1,5 @@
 defmodule Elixir99Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: false
   doctest Elixir99
 
   test "`last` should return error when list is empty" do
@@ -63,7 +63,7 @@ defmodule Elixir99Test do
   end
 
   test "`palindrome` should return false when list is not palindrome" do
-    assert not Elixir99.palindrome([1, 2, 2, 3, 1])
+    refute Elixir99.palindrome([1, 2, 2, 3, 1])
   end
 
   test "`flatten` should return empty list when empty list provided" do
