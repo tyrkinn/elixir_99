@@ -2,21 +2,21 @@
 
 Ninety nine problems in elixir, inspired by [OCaml excercises](https://ocaml.org/exercises)
 
-# Usage
+## Usage
 
-## Install dependencies 
+### Install dependencies
 
 ```shell
 mix deps.get
 ```
 
-## Run tests
+### Run tests
 
 ```shell
 mix test
 ```
 
-## Run tests in watch mode
+### Run tests in watch mode
 
 ```shell
 mix test.watch 
