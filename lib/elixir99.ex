@@ -47,7 +47,7 @@ defmodule Elixir99 do
   defp reverse_aux(xs, acc) do
     case xs do
       [] -> acc
-      [h | tail] -> reverse_aux(tail, [h] ++ acc)
+      [h | tail] -> reverse_aux(tail, [h | acc])
     end
   end
 
