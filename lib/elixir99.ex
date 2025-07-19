@@ -62,9 +62,9 @@ defmodule Elixir99 do
   @spec flatten_aux(list(t_node(t)), list(t)) :: list(t) when t: var
   defp flatten_aux(xs, acc) do
     case xs do
-      [] -> acc
-      [{:one, x} | tail] -> flatten_aux(tail, acc ++ [x])
-      [{:many, l} | tail] -> flatten_aux(tail, acc ++ flatten_aux(l, []))
+      [] -> reverse(acc)
+      [{:one, x} | tail] -> flatten_aux(tail, [x | acc])
+      [{:many, l} | tail] -> flatten_aux(tail, reverse(flatten_aux(l, [])) ++ acc)
     end
   end
 
@@ -74,9 +74,9 @@ defmodule Elixir99 do
   @spec compress_aux(list(t), t, list(t)) :: list(t) when t: var
   defp compress_aux(xs, cur, acc) do
     case xs do
-      [] -> acc
+      [] -> reverse(acc)
       [h | tail] when h == cur -> compress_aux(tail, h, acc)
-      [h | tail] -> compress_aux(tail, h, acc ++ [h])
+      [h | tail] -> compress_aux(tail, h, [h | acc])
     end
   end
 
@@ -93,13 +93,13 @@ defmodule Elixir99 do
   defp pack_aux(xs, cur, acc) do
     case {xs, cur} do
       {[], c} ->
-        acc ++ [c]
+        [c | acc] |> reverse
 
       {[h | tail], [x | _]} when h == x ->
-        pack_aux(tail, cur ++ [h], acc)
+        pack_aux(tail, [h | cur], acc)
 
       {[h | tail], cur} ->
-        pack_aux(tail, [h], acc ++ [cur])
+        pack_aux(tail, [h], [reverse(cur) | acc])
     end
   end
 
@@ -118,13 +118,13 @@ defmodule Elixir99 do
   defp encode_aux(xs, pair, acc) do
     case {xs, pair} do
       {[], p} ->
-        acc ++ [p]
+        reverse([p | acc])
 
       {[h | tail], {c, v}} when h == v ->
         encode_aux(tail, {c + 1, v}, acc)
 
       {[h | tail], p} ->
-        encode_aux(tail, {1, h}, acc ++ [p])
+        encode_aux(tail, {1, h}, [p | acc])
     end
   end
 
@@ -148,8 +148,8 @@ defmodule Elixir99 do
   @spec repeat(t, integer(), list(t)) :: list(t) when t: var
   defp repeat(x, n, acc) do
     case n do
-      0 -> acc
-      n -> repeat(x, n - 1, acc ++ [x])
+      0 -> reverse(acc)
+      n -> repeat(x, n - 1, [x | acc])
     end
   end
 
@@ -164,9 +164,9 @@ defmodule Elixir99 do
   @spec drop_aux(list(t), integer(), integer(), list(t)) :: list(t) when t: var
   defp drop_aux(xs, count, n, acc) do
     case xs do
-      [] -> acc
+      [] -> reverse(acc)
       [_ | tail] when count == n -> drop_aux(tail, 1, n, acc)
-      [h | tail] -> drop_aux(tail, count + 1, n, acc ++ [h])
+      [h | tail] -> drop_aux(tail, count + 1, n, [h | acc])
     end
   end
 
