@@ -1,5 +1,5 @@
 defmodule Elixir99.Helpers do
-  @spec take(list(t), integer()) :: list(t) when t: var
+  @spec take(list(t), pos_integer()) :: list(t) when t: var
   def take(xs, n) do
     case xs do
       [] -> []
@@ -8,7 +8,7 @@ defmodule Elixir99.Helpers do
     end
   end
 
-  @spec drop(list(t), integer()) :: list(t) when t: var
+  @spec drop(list(t), pos_integer()) :: list(t) when t: var
   def drop(xs, n) do
     case xs do
       [] -> []
