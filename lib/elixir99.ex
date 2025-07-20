@@ -177,4 +177,9 @@ defmodule Elixir99 do
     |> drop(from)
     |> take(to - from + 1)
   end
+
+  @spec rotate(list(t), pos_integer()) :: list(t) when t: var
+  def rotate(xs, n) do
+    drop(xs, n) ++ take(xs, n)
+  end
 end

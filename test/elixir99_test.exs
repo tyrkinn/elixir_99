@@ -169,4 +169,18 @@ defmodule Elixir99Test do
   test "`slice` should return slice of list from index to index" do
     assert [3, 4, 5] = Elixir99.slice([1, 2, 3, 4, 5, 6], 2, 4)
   end
+
+  test "`rotate` should rotate list n places to the left" do
+    assert ["d", "e", "f", "g", "h", "a", "b", "c"] =
+             Elixir99.rotate(["a", "b", "c", "d", "e", "f", "g", "h"], 3)
+  end
+
+  test "`rotate` on empty list should return empty list" do
+    assert [] =
+             Elixir99.rotate([], 3)
+  end
+
+  test "`rotate` with n overlaps xs should return the same list" do
+    assert [3, 2, 1] = Elixir99.rotate([3, 2, 1], 5)
+  end
 end
