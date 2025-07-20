@@ -1,4 +1,5 @@
 defmodule Elixir99 do
+  import Elixir99.Helpers, only: [drop: 2, take: 2]
   @spec last(list(t)) :: t when t: var
   def last(xs) do
     case xs do
@@ -168,5 +169,12 @@ defmodule Elixir99 do
       {xs, 0} -> {reverse(acc), xs}
       {[head | tail], n} -> split(tail, n - 1, [head | acc])
     end
+  end
+
+  @spec slice(list(t), integer(), integer()) :: list(t) when t: var
+  def slice(xs, from, to) do
+    xs
+    |> drop(from)
+    |> take(to - from + 1)
   end
 end

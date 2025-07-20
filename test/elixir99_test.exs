@@ -161,4 +161,12 @@ defmodule Elixir99Test do
   test "`split` should return pair of first n elements and tail" do
     assert {[1, 2, 3, 4], [5, 6]} = Elixir99.split([1, 2, 3, 4, 5, 6], 4)
   end
+
+  test "`slice` should return valid slice if `to` overlaps" do
+    assert [3, 4, 5, 6] = Elixir99.slice([1, 2, 3, 4, 5, 6], 2, 8)
+  end
+
+  test "`slice` should return slice of list from index to index" do
+    assert [3, 4, 5] = Elixir99.slice([1, 2, 3, 4, 5, 6], 2, 4)
+  end
 end
