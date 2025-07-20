@@ -1,5 +1,5 @@
 defmodule Elixir99Test do
-  use ExUnit.Case, async: false
+  use ExUnit.Case
   doctest Elixir99
 
   test "`last` should return error when list is empty" do
@@ -152,5 +152,13 @@ defmodule Elixir99Test do
 
   test "`drop` should remove every nth element from passed list" do
     assert [1, 2, 4, 5] = Elixir99.drop([1, 2, 3, 4, 5, 6], 3)
+  end
+
+  test "`split` should return pair of n first elements and empty list if n >= length(xs)" do
+    assert {[1, 2, 3, 4, 5, 6], []} = Elixir99.split([1, 2, 3, 4, 5, 6], 8)
+  end
+
+  test "`split` should return pair of first n elements and tail" do
+    assert {[1, 2, 3, 4], [5, 6]} = Elixir99.split([1, 2, 3, 4, 5, 6], 4)
   end
 end

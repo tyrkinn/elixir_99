@@ -172,4 +172,13 @@ defmodule Elixir99 do
 
   @spec drop(list(t), integer()) :: list(t) when t: var
   def drop(xs, n), do: drop_aux(xs, 1, n, [])
+
+  @spec split(list(t), integer()) :: {list(t), list(t)} when t: var
+  def split(xs, n, acc \\ []) do
+    case {xs, n} do
+      {[], _} -> {reverse(acc), []}
+      {xs, 0} -> {reverse(acc), xs}
+      {[head | tail], n} -> split(tail, n - 1, [head | acc])
+    end
+  end
 end
