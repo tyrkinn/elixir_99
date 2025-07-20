@@ -32,51 +32,42 @@ defmodule Elixir99 do
     end
   end
 
-  @spec len_aux(list(), integer()) :: integer()
-  defp(len_aux(xs, n)) do
-    case xs do
-      [] -> n
-      [_ | tail] -> len_aux(tail, n + 1)
-    end
-  end
-
-  @spec len(list()) :: integer()
-  def len(xs), do: len_aux(xs, 0)
-
-  @spec reverse_aux(list(t), list(t)) :: list(t) when t: var
-  defp reverse_aux(xs, acc) do
+  @spec len(list(), integer()) :: integer()
+  def len(xs, acc \\ 0) do
     case xs do
       [] -> acc
-      [h | tail] -> reverse_aux(tail, [h | acc])
+      [_ | tail] -> len(tail, acc + 1)
     end
   end
 
-  @spec reverse(list(t)) :: list(t) when t: var
-  def reverse(xs), do: reverse_aux(xs, [])
+  @spec reverse(list(t), list()) :: list(t) when t: var
+  def reverse(xs, acc \\ []) do
+    case xs do
+      [] -> acc
+      [h | tail] -> reverse(tail, [h | acc])
+    end
+  end
 
   @spec palindrome(list()) :: boolean()
   def palindrome(xs), do: xs == reverse(xs)
 
   @type t_node(t) :: {:one, t} | {:many, list(t_node(t))}
 
-  @spec flatten_aux(list(t_node(t)), list(t)) :: list(t) when t: var
-  defp flatten_aux(xs, acc) do
+  @spec flatten(list(t_node(t)), list(t)) :: list(t) when t: var
+  def flatten(xs, acc \\ []) do
     case xs do
       [] -> reverse(acc)
-      [{:one, x} | tail] -> flatten_aux(tail, [x | acc])
-      [{:many, l} | tail] -> flatten_aux(tail, reverse(flatten_aux(l, [])) ++ acc)
+      [{:one, x} | tail] -> flatten(tail, [x | acc])
+      [{:many, l} | tail] -> flatten(tail, reverse(flatten(l, [])) ++ acc)
     end
   end
 
-  @spec flatten(list(t_node(t))) :: list(t) when t: var
-  def flatten(xs), do: flatten_aux(xs, [])
-
-  @spec compress_aux(list(t), t, list(t)) :: list(t) when t: var
-  defp compress_aux(xs, cur, acc) do
+  @spec compress(list(t), t, list(t)) :: list(t) when t: var
+  defp compress(xs, cur, acc) do
     case xs do
       [] -> reverse(acc)
-      [h | tail] when h == cur -> compress_aux(tail, h, acc)
-      [h | tail] -> compress_aux(tail, h, [h | acc])
+      [h | tail] when h == cur -> compress(tail, h, acc)
+      [h | tail] -> compress(tail, h, [h | acc])
     end
   end
 
@@ -85,21 +76,21 @@ defmodule Elixir99 do
     case xs do
       [] -> []
       [x] -> [x]
-      [h | tail] -> compress_aux(tail, h, [h])
+      [h | tail] -> compress(tail, h, [h])
     end
   end
 
-  @spec pack_aux(list(t), list(t), list(list(t))) :: list(list(t)) when t: var
-  defp pack_aux(xs, cur, acc) do
+  @spec pack(list(t), list(t), list(list(t))) :: list(list(t)) when t: var
+  defp pack(xs, cur, acc) do
     case {xs, cur} do
       {[], c} ->
         [c | acc] |> reverse
 
       {[h | tail], [x | _]} when h == x ->
-        pack_aux(tail, [h | cur], acc)
+        pack(tail, [h | cur], acc)
 
       {[h | tail], cur} ->
-        pack_aux(tail, [h], [reverse(cur) | acc])
+        pack(tail, [h], [reverse(cur) | acc])
     end
   end
 
@@ -108,23 +99,23 @@ defmodule Elixir99 do
     case xs do
       [] -> []
       [x] -> [[x]]
-      [h | tail] -> pack_aux(tail, [h], [])
+      [h | tail] -> pack(tail, [h], [])
     end
   end
 
   @type rle_pair(t) :: {integer(), t}
 
-  @spec encode_aux(list(t), rle_pair(t), list(rle_pair(t))) :: list(rle_pair(t)) when t: var
-  defp encode_aux(xs, pair, acc) do
+  @spec encode(list(t), rle_pair(t), list(rle_pair(t))) :: list(rle_pair(t)) when t: var
+  defp encode(xs, pair, acc) do
     case {xs, pair} do
       {[], p} ->
         reverse([p | acc])
 
       {[h | tail], {c, v}} when h == v ->
-        encode_aux(tail, {c + 1, v}, acc)
+        encode(tail, {c + 1, v}, acc)
 
       {[h | tail], p} ->
-        encode_aux(tail, {1, h}, [p | acc])
+        encode(tail, {1, h}, [p | acc])
     end
   end
 
@@ -133,7 +124,7 @@ defmodule Elixir99 do
     case xs do
       [] -> []
       [x] -> [{1, x}]
-      [h | tail] -> encode_aux(tail, {1, h}, [])
+      [h | tail] -> encode(tail, {1, h}, [])
     end
   end
 
@@ -161,17 +152,14 @@ defmodule Elixir99 do
     end
   end
 
-  @spec drop_aux(list(t), integer(), integer(), list(t)) :: list(t) when t: var
-  defp drop_aux(xs, count, n, acc) do
+  @spec drop(list(t), integer(), integer(), list(t)) :: list(t) when t: var
+  def drop(xs, n, count \\ 1, acc \\ []) do
     case xs do
       [] -> reverse(acc)
-      [_ | tail] when count == n -> drop_aux(tail, 1, n, acc)
-      [h | tail] -> drop_aux(tail, count + 1, n, [h | acc])
+      [_ | tail] when count == n -> drop(tail, n, 1, acc)
+      [h | tail] -> drop(tail, n, count + 1, [h | acc])
     end
   end
-
-  @spec drop(list(t), integer()) :: list(t) when t: var
-  def drop(xs, n), do: drop_aux(xs, 1, n, [])
 
   @spec split(list(t), integer()) :: {list(t), list(t)} when t: var
   def split(xs, n, acc \\ []) do
