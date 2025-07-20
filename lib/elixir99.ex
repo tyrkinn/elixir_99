@@ -152,12 +152,12 @@ defmodule Elixir99 do
     end
   end
 
-  @spec drop(list(t), integer(), integer(), list(t)) :: list(t) when t: var
-  def drop(xs, n, count \\ 1, acc \\ []) do
+  @spec drop_nths(list(t), integer(), integer(), list(t)) :: list(t) when t: var
+  def drop_nths(xs, n, count \\ 1, acc \\ []) do
     case xs do
       [] -> reverse(acc)
-      [_ | tail] when count == n -> drop(tail, n, 1, acc)
-      [h | tail] -> drop(tail, n, count + 1, [h | acc])
+      [_ | tail] when count == n -> drop_nths(tail, n, 1, acc)
+      [h | tail] -> drop_nths(tail, n, count + 1, [h | acc])
     end
   end
 

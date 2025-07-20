@@ -146,12 +146,12 @@ defmodule Elixir99Test do
     assert [1, 1, 1, 2, 2, 2, 3, 3, 3] = Elixir99.replicate([1, 2, 3], 3)
   end
 
-  test "`drop` should return empty list when empty list provided" do
-    assert [] = Elixir99.drop([], 3)
+  test "`drop_nths` should return empty list when empty list provided" do
+    assert [] = Elixir99.drop_nths([], 3)
   end
 
-  test "`drop` should remove every nth element from passed list" do
-    assert [1, 2, 4, 5] = Elixir99.drop([1, 2, 3, 4, 5, 6], 3)
+  test "`drop_nths` should remove every nth element from passed list" do
+    assert [1, 2, 4, 5] = Elixir99.drop_nths([1, 2, 3, 4, 5, 6], 3)
   end
 
   test "`split` should return pair of n first elements and empty list if n >= length(xs)" do
