@@ -187,4 +187,24 @@ defmodule Elixir99 do
   def range(from, to, acc \\ []) do
     if from <= to, do: range(from + 1, to, [from | acc]), else: reverse(acc)
   end
+
+  @spec map(list(t), fun()) :: list(t) when t: var
+  def map(xs, f, acc \\ []) do
+    case xs do
+      [] -> reverse(acc)
+      [head | tail] -> map(tail, f, [f.(head) | acc])
+    end
+  end
+
+  @spec extract(integer(), list(t)) :: list([t]) when t: var
+  def extract(n, xs) do
+    if n <= 0 do
+      [[]]
+    else
+      case xs do
+        [] -> []
+        [head | tail] -> map(extract(n - 1, tail), &[head | &1]) ++ extract(n, tail)
+      end
+    end
+  end
 end

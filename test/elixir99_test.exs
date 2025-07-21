@@ -199,4 +199,9 @@ defmodule Elixir99Test do
   test "`range` should return list of numbers from `from` to `to`" do
     assert [3, 4, 5] = Elixir99.range(3, 5)
   end
+
+  test "`extract` should return combinations of n distinct objects from n elements of the list" do
+    assert [["a", "b"], ["a", "c"], ["a", "d"], ["b", "c"], ["b", "d"], ["c", "d"]] =
+             Elixir99.extract(2, ["a", "b", "c", "d"])
+  end
 end
