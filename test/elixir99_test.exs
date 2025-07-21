@@ -183,4 +183,20 @@ defmodule Elixir99Test do
   test "`rotate` with n overlaps xs should return the same list" do
     assert [3, 2, 1] = Elixir99.rotate([3, 2, 1], 5)
   end
+
+  test "`range` from n to n should return [n]" do
+    assert [1] = Elixir99.range(1, 1)
+  end
+
+  test "`range` should work with negative numbers" do
+    assert [-3, -2, -1] = Elixir99.range(-3, -1)
+  end
+
+  test "`range` should return empty list if `from` lower then `to`" do
+    assert [] = Elixir99.range(9, 5)
+  end
+
+  test "`range` should return list of numbers from `from` to `to`" do
+    assert [3, 4, 5] = Elixir99.range(3, 5)
+  end
 end

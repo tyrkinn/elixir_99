@@ -182,4 +182,9 @@ defmodule Elixir99 do
   def rotate(xs, n) do
     drop(xs, n) ++ take(xs, n)
   end
+
+  @spec range(integer(), integer()) :: list(integer())
+  def range(from, to, acc \\ []) do
+    if from <= to, do: range(from + 1, to, [from | acc]), else: reverse(acc)
+  end
 end
